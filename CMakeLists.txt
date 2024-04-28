@@ -20,8 +20,8 @@ option(DEBUG_OPTIM_FLAG "Enable debugging clipper optimization" OFF)
 
 option(BUILD_PMC_HEU "Build PMC heuristic" OFF)
 option(BUILD_BINDINGS_MATLAB "Build MATLAB bindings" OFF)
-option(BUILD_BINDINGS_PYTHON "Build Python bindings" OFF)
-option(BUILD_TESTS "Build testsuite" ON)
+option(BUILD_BINDINGS_PYTHON "Build Python bindings" ON)
+option(BUILD_TESTS "Build testsuite" OFF)
 
 
 ###############################################################################
@@ -52,7 +52,7 @@ endif()
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+# FetchContent_MakeAvailable(googletest)
 
 
 ###############################################################################
