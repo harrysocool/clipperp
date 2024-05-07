@@ -10,6 +10,23 @@ Author: kaveh fathian (kavehfathian@gmail.com)
 namespace clipperplus 
 {
 
+//TODO, 20240507 temp solution to adapt eigen 3.3.7, need to be fixed
+template <typename T1, typename T2>
+T1 extract(const T1& full, const T2& ind1, const T2& ind2)
+{
+    int N1 = ind1.size();
+    int N2 = ind2.size();
+    T1 target(N1, N2);
+    for (int i = 0; i < N1; i++)
+        for (int j = 0; j < N2; j++)
+            {
+                typename T2::value_type ii = ind1.at(i);
+                typename T2::value_type jj = ind2.at(j);
+                target(i,j) = full(ii, jj);
+
+            }
+    return target;
+}
 
 std::pair<std::vector<Node>, CERTIFICATE> find_clique(const Graph &graph)
 {
@@ -31,7 +48,10 @@ std::pair<std::vector<Node>, CERTIFICATE> find_clique(const Graph &graph)
         }
     }
 
-    Eigen::MatrixXd M_pruned = graph.get_adj_matrix()(keep, keep);
+    // Eigen::MatrixXd M_pruned = graph.get_adj_matrix()(keep, keep);
+    //TODO, 20240507 temp solution to adapt eigen 3.3.7, need to be fixed
+    Eigen::MatrixXd M_pruned = extract(graph.get_adj_matrix(), keep, keep);
+
     M_pruned.diagonal().setOnes();
 
     Eigen::VectorXd u0 = Eigen::VectorXd::Ones(keep.size());
