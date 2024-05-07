@@ -5,6 +5,23 @@
 namespace clipperplus
 {
 
+//TODO, 20240507 temp solution, need to be fixed
+template <typename T1, typename T2>
+T1 extract(const T1& full, const T2& ind1, const T2& ind2)
+{
+    int N1 = ind1.size();
+    int N2 = ind2.size();
+    T1 target(N1, N2);
+    for (int i = 0; i < N1; i++)
+        for (int j = 0; j < N2; j++)
+            {
+                typename T2::value_type ii = ind1.at(i);
+                typename T2::value_type jj = ind2.at(j);
+                target(i,j) = full(ii, jj);
+
+            }
+    return target;
+}
 
 Graph::Graph(Eigen::MatrixXd adj) : adj_matrix(std::move(adj)), adj_list(adj_matrix.rows())
 {
@@ -55,7 +72,11 @@ void Graph::merge(const Graph &g)
             g.adj_list[i].begin(), g.adj_list[i].end()
         );
 
-        adj_matrix(i, g.adj_list[i]).setOnes();
+        // adj_matrix(i, g.adj_list[i]).setOnes();
+        //TODO, 20240507 temp solution to adapt eigen 3.3.7, need to be fixed
+        for (auto u : g.adj_list[i]) {
+            adj_matrix(i, u) = 1;
+        }
     }
 
     kcore.clear();
@@ -68,7 +89,9 @@ Graph Graph::induced(const std::vector<Node> &nodes) const
     int n = size();
 
     auto g = Graph();
-    g.adj_matrix = adj_matrix(nodes, nodes);
+    // g.adj_matrix = adj_matrix(nodes, nodes);
+    //TODO, 20240507 temp solution to adapt eigen 3.3.7, need to be fixed
+    g.adj_matrix = extract(adj_matrix, nodes, nodes);
 
 
     std::vector<int> keep(size(), -1);
