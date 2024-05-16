@@ -179,12 +179,12 @@ PYBIND11_MODULE(clipperpluspy, m)
     .def("score_pairwise_consistency", &clipper::CLIPPER::scorePairwiseConsistency,
           // py::call_guard<py::gil_scoped_release>(),
           "D1"_a.noconvert(), "D2"_a.noconvert(), "A"_a.noconvert())
-    .def("solve", &clipper::CLIPPER::solveBinary_old,
+    .def("solve", &clipper::CLIPPER::solve,
           "u0"_a.noconvert()=Eigen::VectorXd())
     .def("get_solution", &clipper::CLIPPER::getSolution)
     .def("get_affinity_matrix", &clipper::CLIPPER::getAffinityMatrix)
     .def("get_constraint_matrix", &clipper::CLIPPER::getConstraintMatrix)
-    .def("set_matrix_data", &clipper::CLIPPER::setMatrixData_old,
+    .def("set_matrix_data", &clipper::CLIPPER::setMatrixData,
           "M"_a.noconvert(), "C"_a.noconvert())
     .def("set_parallelize", &clipper::CLIPPER::setParallelize);
 
